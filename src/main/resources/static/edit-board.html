@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 수정</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="container">
+    <h1>게시글 수정</h1>
+    <form id="edit-board-form">
+        <input type="text" id="title" name="title" required>
+        <textarea id="content" name="content" required></textarea>
+
+        <div id="edit-board-form-buttons">
+            <button type="submit">수정 완료</button>
+            <button type="button" id="cancel-btn">취소</button>
+        </div>
+    </form>
+</div>
+
+<script src="/js/edit-board.js"></script>
+</body>
+</html>

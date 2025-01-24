@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 작성</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="container">
+    <h1>게시글 작성</h1>
+    <form id="create-board-form">
+        <input type="text" id="title" name="title" placeholder="제목" required>
+        <input type="text" id="userName" name="userName" placeholder="작성자" required>
+        <textarea id="content" name="content" placeholder="내용" required></textarea>
+        <div id="create-board-form-buttons">
+            <button type="submit">작성 완료</button>
+            <button type="button" id="cancel-btn">취소</button>
+        </div>
+    </form>
+</div>
+
+<script src="/js/create-board.js"></script>
+</body>
+</html>
