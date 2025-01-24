@@ -18,7 +18,8 @@ Rest api로 통신하도록 구성
 ![스크린샷 2025-01-24 205140](https://github.com/user-attachments/assets/4261a244-2f10-4b7a-879a-83e8f0a2393b)
 
 제목으로 검색하면 해당 문자가 포함된 글들이 나온다. 빈칸으로 검색시 전체 목록이 그대로 출력된다.
-![스크린샷 2025-01-24 205723](https://github.com/user-attachments/assets/067ad519-f728-4ce9-84c3-974168d06f44)
+![스크린샷 2025-01-24 205833](https://github.com/user-attachments/assets/db0bffe6-4d89-4cf8-8870-7b96c85aa255)
+
 
 
 
