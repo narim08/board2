@@ -1,7 +1,7 @@
 spring:
   datasource:
     url: jdbc:mariadb://${DB_url}:${DB_port}/${DB_name}
-    username: ${DB_usrename}
+    username: ${DB_username}
     password: ${DB_password}
     driver-class-name: org.mariadb.jdbc.Driver
   jpa:
