@@ -8,6 +8,7 @@
 2025.01.24: 코드 작성, 구현 완료
 
 2025.01.25: 서버 배포(cloudTypd)
+https://port-0-board2-m6bsa1pbd9e6e428.sel4.cloudtype.app
 
 
 ---
