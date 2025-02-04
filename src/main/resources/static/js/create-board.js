@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => { //페이지 로드 시 실
     
     //작성 완료 버튼 클릭할 시 실행
     createBoardForm.addEventListener('submit', async (e) => {
-        e.preventDefault();    //빈칸 제출 방지
+        e.preventDefault(); //submit을 누르면 자동 페이지 새로고침 되는데, 그거 막음(새로고침 되기 전에 백엔드랑 통신해야돼서)
 
         //사용자가 입력한 입력 필드의 값을 가져와서 formData 객체에 저장
         const formData = {
