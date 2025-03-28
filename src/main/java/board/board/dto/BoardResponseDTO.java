@@ -15,4 +15,5 @@ public class BoardResponseDTO {
     private String content;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
+    private int viewCount;
 }

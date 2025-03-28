@@ -58,11 +58,17 @@ public class BoardService {
     }
 
     //게시글 상세 조회
+    @Transactional
     public BoardResponseDTO getBoardById(Long id) {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
 
+        increaseViewCount(board); //조회수 증가
         return convertToResponseDTO(board);
+    }
+    @Transactional
+    public void increaseViewCount(Board board) {
+        board.increaseViewCount(); // 조회수 증가
     }
 
     //게시글 검색 조회 (제목)
@@ -128,6 +134,7 @@ public class BoardService {
         responseDTO.setContent(board.getContent());
         responseDTO.setCreateTime(board.getCreateTime());
         responseDTO.setUpdateTime(board.getUpdateTime());
+        responseDTO.setViewCount(board.getViewCount());
 
         return responseDTO;
     }

@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <h2>${board.title}</h2>
                 <p>작성자: ${board.userName}</p>
                 <p>작성일: ${new Date(board.createTime).toLocaleString()}</p>
+                <p>조회수: ${board.viewCount}</p>
                 <div class="board-content">${board.content}</div>
                 <div id="comments-section">
                     <h3>댓글</h3>

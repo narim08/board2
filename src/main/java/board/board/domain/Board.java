@@ -39,5 +39,13 @@ public class Board {
     //1:N에서 1쪽은 매핑되었다는 걸 써줘야 됨
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true) //연쇄 삭제 설정
     private List<Comment> comments = new ArrayList<>(); //한개의 게시글은 여러개의 댓글을 list로 보관
+
+    //조회수 필드 추가
+    @Column(nullable = false)
+    private int viewCount = 0;
+
+    public void increaseViewCount() {
+        this.viewCount++;
+    }
 }
 
