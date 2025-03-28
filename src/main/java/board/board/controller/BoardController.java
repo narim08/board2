@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/board")
@@ -75,5 +76,18 @@ public class BoardController {
         boardService.deleteBoard(username, id);
 
         return ResponseEntity.noContent().build(); //본문 없는 응답 자동 생성 (200 ok만)
+    }
+
+
+    //좋아요 기능
+    @PostMapping("/{id}/like")
+    public ResponseEntity<?> toggleLike(@PathVariable Long id, @RequestHeader("Username") String username) {
+        boolean liked = boardService.toggleLike(id, username);
+        return ResponseEntity.ok(Map.of("liked", liked, "likeCount", boardService.getLikeCount(id)));
+    }
+
+    @GetMapping("/{id}/like/count")
+    public ResponseEntity<Long> getLikeCount(@PathVariable Long id) {
+        return ResponseEntity.ok(boardService.getLikeCount(id));
     }
 }

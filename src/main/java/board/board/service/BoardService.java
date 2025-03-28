@@ -1,10 +1,12 @@
 package board.board.service;
 
 import board.board.domain.Board;
+import board.board.domain.LikeEntity;
 import board.board.domain.User;
 import board.board.dto.BoardRequestDTO;
 import board.board.dto.BoardResponseDTO;
 import board.board.repository.BoardRepository;
+import board.board.repository.LikeRepository;
 import board.board.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,6 +26,7 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
+    private final LikeRepository likeRepository;
 
     /** Create: 게시글 작성 */
     /** Request: 제목, 작성자, 내용*/
@@ -120,6 +124,31 @@ public class BoardService {
         }
 
         boardRepository.delete(board);
+    }
+
+    @Transactional
+    public boolean toggleLike(Long boardId, String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
+
+        Optional<LikeEntity> like = likeRepository.findByUserAndBoard(user, board);
+        if (like.isPresent()) {
+            // 이미 좋아요 눌렀으면 취소
+            likeRepository.delete(like.get());
+            return false; // 좋아요 취소됨
+        } else {
+            // 좋아요 추가
+            likeRepository.save(new LikeEntity(user, board));
+            return true; // 좋아요 추가됨
+        }
+    }
+
+    public long getLikeCount(Long boardId) {
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
+        return likeRepository.countByBoard(board);
     }
 
 

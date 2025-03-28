@@ -47,5 +47,14 @@ public class Board {
     public void increaseViewCount() {
         this.viewCount++;
     }
+
+    //좋아요 필드 추가
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<LikeEntity> likes = new ArrayList<>();
+
+    public int getLikeCount() {
+        return likes.size();
+    }
+
 }
 
