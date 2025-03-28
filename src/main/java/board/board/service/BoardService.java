@@ -1,9 +1,11 @@
 package board.board.service;
 
 import board.board.domain.Board;
+import board.board.domain.User;
 import board.board.dto.BoardRequestDTO;
 import board.board.dto.BoardResponseDTO;
 import board.board.repository.BoardRepository;
+import board.board.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,15 +22,18 @@ import java.util.stream.Collectors;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    private final UserRepository userRepository;
 
     /** Create: 게시글 작성 */
     /** Request: 제목, 작성자, 내용*/
     @Transactional
-    public BoardResponseDTO createBoard(BoardRequestDTO boardRequestDTO) {
-        Board board = new Board();
+    public BoardResponseDTO createBoard(String username, BoardRequestDTO boardRequestDTO) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
+        Board board = new Board();
+        board.setUser(user);
         board.setTitle(boardRequestDTO.getTitle());
-        board.setUserName(boardRequestDTO.getUserName());
         board.setContent(boardRequestDTO.getContent());
         board.setCreateTime(LocalDateTime.now());
         board.setUpdateTime(LocalDateTime.now());
@@ -79,9 +84,14 @@ public class BoardService {
     /** Update: 게시글 수정 */
     /** Request: 제목, 내용*/
     @Transactional
-    public BoardResponseDTO updateBoard(Long id, BoardRequestDTO boardRequestDTO) {
-        Board board = boardRepository.findById(id)
+    public BoardResponseDTO updateBoard(String username, Long boardId, BoardRequestDTO boardRequestDTO) {
+        Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
+
+        // Check if the user is the board's owner
+        if (!board.getUser().getUsername().equals(username)) {
+            throw new RuntimeException("You are not authorized to update this board");
+        }
 
         board.setTitle(boardRequestDTO.getTitle());
         board.setContent(boardRequestDTO.getContent());
@@ -94,9 +104,14 @@ public class BoardService {
 
     /** Delete: 게시글 삭제 */
     @Transactional
-    public void deleteBoard(Long id) {
-        Board board = boardRepository.findById(id)
+    public void deleteBoard(String username, Long boardId) {
+        Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
+
+        // Check if the user is the board's owner
+        if (!board.getUser().getUsername().equals(username)) {
+            throw new RuntimeException("You are not authorized to delete this board");
+        }
 
         boardRepository.delete(board);
     }
@@ -109,7 +124,7 @@ public class BoardService {
 
         responseDTO.setId(board.getId());
         responseDTO.setTitle(board.getTitle());
-        responseDTO.setUserName(board.getUserName());
+        responseDTO.setUserName(board.getUser().getUsername());
         responseDTO.setContent(board.getContent());
         responseDTO.setCreateTime(board.getCreateTime());
         responseDTO.setUpdateTime(board.getUpdateTime());

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>회원가입</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="container">
+    <h1>회원가입</h1>
+    <form id="register-form">
+        <input type="text" id="username" name="username" placeholder="아이디" required>
+        <input type="password" id="password" name="password" placeholder="비밀번호" required>
+        <input type="password" id="confirm-password" name="confirm-password" placeholder="비밀번호 확인" required>
+        <input type="email" id="email" name="email" placeholder="이메일" required>
+        <input type="text" id="nickname" name="nickname" placeholder="닉네임" required>
+        <div class="form-actions">
+            <button type="submit">회원가입</button>
+            <button type="button" id="login-link">로그인으로</button>
+        </div>
+    </form>
+</div>
+
+<script src="/js/register.js"></script>
+</body>
+</html>

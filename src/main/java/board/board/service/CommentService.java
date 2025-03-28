@@ -2,10 +2,12 @@ package board.board.service;
 
 import board.board.domain.Board;
 import board.board.domain.Comment;
+import board.board.domain.User;
 import board.board.dto.CommentRequestDTO;
 import board.board.dto.CommentResponseDTO;
 import board.board.repository.BoardRepository;
 import board.board.repository.CommentRepository;
+import board.board.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,17 +23,21 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final BoardRepository boardRepository;
+    private final UserRepository userRepository;
 
     /** Create: 댓글 작성 */
     /** Request: 작성자, 내용 */
     @Transactional
-    public CommentResponseDTO createComment(Long boardId, CommentRequestDTO requestDTO) {
+    public CommentResponseDTO createComment(String username, Long boardId, CommentRequestDTO requestDTO) {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
 
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
         Comment comment = new Comment();
         comment.setBoard(board); //게시글과 댓글 연결
-        comment.setUserName(requestDTO.getUserName());
+        comment.setUser(user); //유저와 댓글 연결
         comment.setContent(requestDTO.getContent());
         comment.setCreateTime(LocalDateTime.now());
         comment.setUpdateTime(LocalDateTime.now());
@@ -60,9 +66,14 @@ public class CommentService {
 
     /** Update: 댓글 수정 */
     @Transactional
-    public CommentResponseDTO updateComment(Long commentId, CommentRequestDTO requestDTO) {
+    public CommentResponseDTO updateComment(String username, Long commentId, CommentRequestDTO requestDTO) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new RuntimeException("댓글을 찾을 수 없습니다."));
+
+        // Check if the user is the comment's owner
+        if (!comment.getUser().getUsername().equals(username)) {
+            throw new RuntimeException("You are not authorized to update this comment");
+        }
 
         comment.setContent(requestDTO.getContent());
         comment.setUpdateTime(LocalDateTime.now());
@@ -73,9 +84,14 @@ public class CommentService {
 
     /** Delete: 댓글 삭제 */
     @Transactional
-    public void deleteComment(Long commentId) {
+    public void deleteComment(String username, Long commentId) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(()-> new RuntimeException("댓글을 찾을 수 없습니다."));
+
+        // Check if the user is the comment's owner
+        if (!comment.getUser().getUsername().equals(username)) {
+            throw new RuntimeException("You are not authorized to delete this comment");
+        }
 
         commentRepository.delete(comment);
     }
@@ -88,7 +104,7 @@ public class CommentService {
 
         responseDTO.setId(comment.getId());
         responseDTO.setBoardId(comment.getBoard().getId());
-        responseDTO.setUserName(comment.getUserName());
+        responseDTO.setUserName(comment.getUser().getUsername());
         responseDTO.setContent(comment.getContent());
         responseDTO.setCreateTime(comment.getCreateTime());
         responseDTO.setUpdateTime(comment.getUpdateTime());

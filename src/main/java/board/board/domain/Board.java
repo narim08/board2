@@ -21,8 +21,11 @@ public class Board {
     @Column(nullable = false, length = 255)
     private String title;
 
-    @Column(nullable = false, length = 100)
-    private String userName;
+    /*@Column(nullable = false, length = 100)
+    private String userName;*/
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @Column(nullable = false, columnDefinition = "TEXT") // TEXT 타입
     private String content;

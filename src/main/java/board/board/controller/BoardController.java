@@ -22,8 +22,9 @@ public class BoardController {
 
     /** Create: 게시글 작성 */
     @PostMapping
-    public ResponseEntity<BoardResponseDTO> createBoard(@RequestBody BoardRequestDTO requestDTO) {
-        BoardResponseDTO responseDTO = boardService.createBoard(requestDTO);
+    public ResponseEntity<BoardResponseDTO> createBoard(@RequestHeader("Username") String username,
+                                                        @RequestBody BoardRequestDTO requestDTO) {
+        BoardResponseDTO responseDTO = boardService.createBoard(username, requestDTO);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
@@ -58,9 +59,10 @@ public class BoardController {
 
     /** Update: 게시글 수정 */
     @PutMapping("/{id}")
-    public ResponseEntity<BoardResponseDTO> updateBoard(@PathVariable Long id,
+    public ResponseEntity<BoardResponseDTO> updateBoard(@RequestHeader("Username") String username,
+                                                        @PathVariable Long id,
                                                         @RequestBody BoardRequestDTO requestDTO) {
-        BoardResponseDTO board = boardService.updateBoard(id, requestDTO);
+        BoardResponseDTO board = boardService.updateBoard(username, id, requestDTO);
 
         return ResponseEntity.ok(board);
     }
@@ -68,8 +70,9 @@ public class BoardController {
 
     /** Delete: 게시글 삭제 */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBoard(@PathVariable Long id) {
-        boardService.deleteBoard(id);
+    public ResponseEntity<Void> deleteBoard(@RequestHeader("Username") String username,
+                                            @PathVariable Long id) {
+        boardService.deleteBoard(username, id);
 
         return ResponseEntity.noContent().build(); //본문 없는 응답 자동 생성 (200 ok만)
     }

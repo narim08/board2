@@ -19,9 +19,10 @@ public class CommentController {
 
     /** Create: 댓글 작성 */
     @PostMapping
-    public ResponseEntity<CommentResponseDTO> createComment(@PathVariable Long boardId,
+    public ResponseEntity<CommentResponseDTO> createComment(@RequestHeader("Username") String username,
+                                                            @PathVariable Long boardId,
                                                             @RequestBody CommentRequestDTO requestDTO) {
-        CommentResponseDTO responseDTO = commentService.createComment(boardId, requestDTO);
+        CommentResponseDTO responseDTO = commentService.createComment(username, boardId, requestDTO);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
@@ -49,10 +50,11 @@ public class CommentController {
 
     /** Update: 댓글 수정 */
     @PutMapping("/{commentId}")
-    public ResponseEntity<CommentResponseDTO> updateComment(@PathVariable Long boardId,
+    public ResponseEntity<CommentResponseDTO> updateComment(@RequestHeader("Username") String username,
+                                                            @PathVariable Long boardId,
                                                             @PathVariable Long commentId,
                                                             @RequestBody CommentRequestDTO requestDTO) {
-        CommentResponseDTO responseDTO = commentService.updateComment(commentId, requestDTO);
+        CommentResponseDTO responseDTO = commentService.updateComment(username, commentId, requestDTO);
 
         return ResponseEntity.ok(responseDTO);
     }
@@ -60,9 +62,10 @@ public class CommentController {
 
     /** Delete: 댓글 삭제 */
     @DeleteMapping("/{commentId}")
-    public ResponseEntity<Void> deleteComment(@PathVariable Long boardId,
+    public ResponseEntity<Void> deleteComment(@RequestHeader("Username") String username,
+                                              @PathVariable Long boardId,
                                               @PathVariable Long commentId) {
-        commentService.deleteComment(commentId);
+        commentService.deleteComment(username, commentId);
 
         return ResponseEntity.noContent().build();
     }

@@ -20,8 +20,11 @@ public class Comment {
     @JoinColumn(name = "post_id", nullable = false) // 조인해서 가져온 외래 키
     private Board board;
 
-    @Column(nullable = false, length = 100) // NOT NULL, 최대 길이 100자
-    private String userName;
+    /*@Column(nullable = false, length = 100) // NOT NULL, 최대 길이 100자
+    private String userName;*/
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @Column(nullable = false, columnDefinition = "TEXT") // NOT NULL, TEXT 타입
     private String content;

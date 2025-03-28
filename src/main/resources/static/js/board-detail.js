@@ -1,3 +1,4 @@
+/*
 document.addEventListener('DOMContentLoaded', () => {
     const boardDetail = document.getElementById('board-detail');
     const backToListBtn = document.getElementById('back-to-list-btn');
@@ -223,4 +224,85 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     fetchBoardDetail();
+});*/
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Check authentication
+    const username = localStorage.getItem('username');
+    if (!username) {
+        window.location.href = '/login.html';
+        return;
+    }
+
+    const boardDetail = document.getElementById('board-detail');
+    const backToListBtn = document.getElementById('back-to-list-btn');
+    const editBoardBtn = document.getElementById('edit-board-btn');
+    const deleteBoardBtn = document.getElementById('delete-board-btn');
+
+    // Get board ID from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const boardId = urlParams.get('id');
+
+    // Fetch board details
+    async function fetchBoardDetails() {
+        try {
+            const response = await fetch(`/api/board/${boardId}`);
+            const board = await response.json();
+
+            // Render board details
+            boardDetail.innerHTML = `
+                <h2>${board.title}</h2>
+                <p>작성자: ${board.userName}</p>
+                <p>작성일: ${new Date(board.createTime).toLocaleString()}</p>
+                <div class="board-content">${board.content}</div>
+            `;
+
+            // Manage edit and delete button visibility
+            if (board.userName !== username) {
+                editBoardBtn.style.display = 'none';
+                deleteBoardBtn.style.display = 'none';
+            }
+        } catch (error) {
+            console.error('Error fetching board details:', error);
+            alert('게시글 상세 정보를 불러오는 중 오류가 발생했습니다.');
+        }
+    }
+
+    // Back to list button
+    backToListBtn.addEventListener('click', () => {
+        window.location.href = '/index.html';
+    });
+
+    // Edit board button
+    editBoardBtn.addEventListener('click', () => {
+        window.location.href = `/edit-board.html?id=${boardId}`;
+    });
+
+    // Delete board button
+    deleteBoardBtn.addEventListener('click', async () => {
+        if (!confirm('정말로 이 게시글을 삭제하시겠습니까?')) return;
+
+        try {
+            const response = await fetch(`/api/board/${boardId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Username': username
+                }
+            });
+
+            if (response.ok) {
+                window.location.href = '/index.html';
+            } else {
+                const errorData = await response.json();
+                alert(errorData.message || '게시글 삭제에 실패했습니다.');
+            }
+        } catch (error) {
+            console.error('Delete board error:', error);
+            alert('게시글 삭제 중 오류가 발생했습니다.');
+        }
+    });
+
+    // Fetch initial board details
+    fetchBoardDetails();
 });
