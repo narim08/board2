@@ -19,6 +19,63 @@ body {
 }
 
 /* 메인 페이지 스타일 */
+header {
+    background-color: #ffefd5;
+    border-bottom: 2px solid #ffcc99;
+    padding: 10px 0;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ff6b6b;
+    flex-grow: 1;
+    text-align: center;
+}
+
+.nav-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logout-btn {
+    background-color: #ff6b6b;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.logout-btn:hover {
+    background-color: #e55a5a;
+}
+
+.profile-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #ff6b6b;
+    transition: transform 0.2s;
+    margin-left: auto;
+}
+
+.profile-icon:hover {
+    transform: scale(1.1);
+}
+
 #create-board-btn {
     background-color: #ff9aa2;
     color: white;

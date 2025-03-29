@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>블로그 마이페이지 - 동물의 숲 테마</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Gaegu', cursive;
+        }
+
+        body {
+            background-color: #e8f5e9;
+            color: #5a3e2b;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M54.627 0l.83.828-1.415 1.415L51.8 0h2.827zM5.373 0l-.83.828L5.96 2.243 8.2 0H5.374zM48.97 0l3.657 3.657-1.414 1.414L46.143 0h2.828zM11.03 0L7.372 3.657 8.787 5.07 13.857 0H11.03zm32.284 0L49.8 6.485 48.384 7.9l-7.9-7.9h2.83zM16.686 0L10.2 6.485 11.616 7.9l7.9-7.9h-2.83zm20.97 0l9.315 9.314-1.414 1.414L34.828 0h2.83zM22.344 0L13.03 9.314l1.414 1.414L25.172 0h-2.83zM32 0l12.142 12.142-1.414 1.414L30 .828 17.272 13.556l-1.414-1.414L28 0h4zM.284 0l28 28-1.414 1.414L0 2.544v2.83L26.272 32l-1.414 1.414-28-28V0h3.428zM0 5.373l25.456 25.455-1.414 1.415L0 8.2v2.83l22.456 22.456-1.414 1.415L0 13.657v2.83l19.457 19.456-1.414 1.415L0 19.115v2.83l16.457 16.456-1.414 1.415L0 24.573v2.83l13.457 13.456-1.414 1.415L0 30.03v2.83l10.457 10.456-1.414 1.415L0 35.488v2.83l7.457 7.456-1.414 1.415L0 40.946v2.83l4.457 4.456-1.414 1.415L0 46.403v2.83l1.457 1.456-1.414 1.415-1.415-1.415h2.83L59.314 4.544 60 3.86V0h-3.428L0 56.572V60h3.428L56.9 6.544l1.414-1.415L60 3.314v-.002h-4.285L36.57 22.456 28 13.887 19.427 22.46 0 3.033v2.83L16.857 25.03 28 13.887 39.143 25.03 56 8.17V5.344L39.574 21.77l-1.414-1.414L56 2.514V0h-2.83L28 25.172 8.284 5.457 6.87 6.87l19.716 19.717L0 0v2.828l6.413 6.415 1.415-1.415.003-.002L26.857 26.86 28 25.716l1.143 1.143 7.43-7.428 1.414 1.414L28 30.83l-4.686-4.687-22.97 22.97h2.828l21.556-21.557 1.414 1.415L5.374 50.744l-1.414 1.414H6.8l21.556-21.556 1.414 1.414-19.143 19.142h2.83L31.8 32.8l1.415 1.413L13.357 54.072h2.83l17.85-17.85 1.414 1.413-16.438 16.438h2.83l14.6-14.6 1.414 1.414-13.187 13.187h2.83l11.343-11.342 1.413 1.414-9.93 9.928h2.83l8.086-8.086 1.413 1.414-6.673 6.672h2.83l4.83-4.83 1.414 1.415-3.416 3.415h2.83l2-2 1.415 1.414-.587.587h2.83l.587-.587L60 51.545V48.72L35.457 24.175l1.415-1.414L60 46.304V43.48L37.87 21.35l1.415-1.414L60 41.08V38.25L40.284 18.535l1.414-1.414L60 35.838v-2.83L43.14 15.672l1.414-1.414L60 30.395v-2.83L46.01 11.1l1.414-1.414L60 22.272v-2.83L48.9 7.555l1.415-1.414L60 16.225v-2.83L52.77 3.4 54.142 2.03 60 7.867z' fill='%23c8e6c9' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        .mypage {
+            display: flex;
+            gap: 20px;
+        }
+
+        /* 좌측 사이드바 */
+        .sidebar {
+            width: 30%;
+            background-color: #fff9c4;
+            border-radius: 20px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            border: 4px solid #a5d6a7;
+            position: relative;
+        }
+
+        .sidebar:before {
+            content: "";
+            position: absolute;
+            top: -10px;
+            left: 30px;
+            width: 50px;
+            height: 30px;
+            background-color: #81c784;
+            border-radius: 50%;
+            z-index: -1;
+        }
+
+        .sidebar:after {
+            content: "";
+            position: absolute;
+            bottom: -15px;
+            right: 40px;
+            width: 40px;
+            height: 40px;
+            background-color: #ffcc80;
+            border-radius: 50%;
+            z-index: -1;
+        }
+
+        .profile {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .profile-img-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 15px;
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #ffb74d;
+            background-color: #fff9c4;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .profile-img-container:after {
+            content: "";
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: #ffcc80;
+            border-radius: 50%;
+            bottom: -5px;
+            right: 0;
+            border: 3px solid #ffb74d;
+        }
+
+        .profile h2 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+            color: #5a3e2b;
+        }
+
+        .profile p {
+            color: #6d4c41;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .edit-profile-btn {
+            background-color: #ffb74d;
+            color: #5a3e2b;
+            border: 3px solid #fb8c00;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.1rem;
+            font-weight: bold;
+            box-shadow: 0 4px 0 #e65100;
+        }
+
+        .edit-profile-btn:hover {
+            background-color: #ffa726;
+            transform: translateY(-2px);
+        }
+
+        .edit-profile-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #e65100;
+        }
+
+        .stats-section {
+            margin-bottom: 30px;
+            background-color: #f1f8e9;
+            padding: 15px;
+            border-radius: 15px;
+            border: 3px dashed #c5e1a5;
+        }
+
+        .stats-section h3 {
+            margin-bottom: 15px;
+            color: #33691e;
+            font-size: 1.3rem;
+            text-align: center;
+            position: relative;
+            padding-bottom: 8px;
+        }
+
+        .stats-section h3:after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background-color: #aed581;
+            border-radius: 3px;
+        }
+
+        .chart-container {
+            height: 200px;
+            margin-top: 15px;
+            position: relative;
+        }
+
+        /* 메인 콘텐츠 */
+        .main-content {
+            width: 70%;
+            background-color: #e1f5fe;
+            border-radius: 20px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            border: 4px solid #81d4fa;
+            position: relative;
+        }
+
+        .main-content:before {
+            content: "";
+            position: absolute;
+            top: -15px;
+            right: 50px;
+            width: 40px;
+            height: 40px;
+            background-color: #4fc3f7;
+            border-radius: 50%;
+            z-index: -1;
+        }
+
+        .main-content:after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 70px;
+            width: 30px;
+            height: 30px;
+            background-color: #b3e5fc;
+            border-radius: 50%;
+            z-index: -1;
+        }
+
+        .content-section {
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .content-section h3 {
+            color: #0277bd;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+            position: relative;
+            display: inline-block;
+        }
+
+        .content-section h3:after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: #4fc3f7;
+            border-radius: 3px;
+        }
+
+        .progress-container {
+            margin: 20px 0;
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 15px;
+            border: 2px solid #b3e5fc;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #01579b;
+        }
+
+        .progress-bar {
+            height: 25px;
+            background-color: #e3f2fd;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 2px solid #90caf9;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(45deg, #82b1ff, #448aff);
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress:after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                45deg,
+                rgba(255, 255, 255, 0.2) 25%,
+                transparent 25%,
+                transparent 50%,
+                rgba(255, 255, 255, 0.2) 50%,
+                rgba(255, 255, 255, 0.2) 75%,
+                transparent 75%,
+                transparent
+            );
+            background-size: 20px 20px;
+            animation: moveStripes 3s linear infinite;
+        }
+
+        @keyframes moveStripes {
+            from {
+                background-position: 0 0;
+            }
+            to {
+                background-position: 20px 0;
+            }
+        }
+
+        .fortune {
+            background-color: #fffde7;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 15px;
+            border: 3px solid #fff176;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .fortune:before {
+            content: "✨";
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            font-size: 24px;
+        }
+
+        .fortune:after {
+            content: "✨";
+            position: absolute;
+            bottom: -15px;
+            right: 20px;
+            font-size: 24px;
+        }
+
+        .fortune p {
+            color: #5d4037;
+            line-height: 1.8;
+            font-size: 1.2rem;
+        }
+
+        .fortune p strong {
+            color: #f57f17;
+        }
+
+        .recent-activities {
+            margin-top: 20px;
+        }
+
+        .activity-item {
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: #fff;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 2px dashed #bbdefb;
+            transition: transform 0.3s;
+        }
+
+        .activity-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .activity-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #bbdefb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: #0277bd;
+            font-size: 1.5rem;
+            border: 3px solid #64b5f6;
+        }
+
+        .activity-details {
+            flex: 1;
+        }
+
+        .activity-details h4 {
+            margin-bottom: 5px;
+            font-size: 1.2rem;
+            color: #0277bd;
+        }
+
+        .activity-details p {
+            color: #5d4037;
+            font-size: 1rem;
+        }
+
+        .activity-time {
+            background-color: #e1f5fe;
+            padding: 5px 10px;
+            border-radius: 20px;
+            color: #01579b;
+            font-size: 0.9rem;
+            font-weight: bold;
+            border: 2px solid #81d4fa;
+        }
+
+        /* 동물의 숲 스타일 데코레이션 요소 */
+        .leaf-decoration {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #a5d6a7;
+            border-radius: 50% 0 50% 0;
+            transform: rotate(45deg);
+        }
+
+        .leaf-1 {
+            top: 20px;
+            right: 20px;
+        }
+
+        .leaf-2 {
+            bottom: 30px;
+            left: 20px;
+        }
+
+        .leaf-3 {
+            top: 50%;
+            right: 30px;
+        }
+
+        .fish-decoration {
+            position: absolute;
+            width: 30px;
+            height: 15px;
+            background-color: #90caf9;
+            border-radius: 50%;
+            transform: rotate(30deg);
+        }
+
+        .fish-1 {
+            bottom: 40px;
+            right: 40px;
+        }
+
+        .fish-2 {
+            top: 30px;
+            left: 50px;
+        }
+
+        /* 반응형 디자인 */
+        @media (max-width: 768px) {
+            .mypage {
+                flex-direction: column;
+            }
+            .sidebar, .main-content {
+                width: 100%;
+            }
+        }
+
+        /* 꾸미기 요소들 */
+        .page-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #5a3e2b;
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .page-title:before, .page-title:after {
+            content: "🍃";
+            margin: 0 10px;
+        }
+
+        .bell-icon {
+            display: inline-block;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 class="page-title">내 숲의 일지</h1>
+    <div class="mypage">
+        <!-- 좌측 사이드바 -->
+        <div class="sidebar">
+            <!-- 데코레이션 요소 -->
+            <div class="leaf-decoration leaf-1"></div>
+            <div class="leaf-decoration leaf-2"></div>
+
+            <!-- 프로필 섹션 -->
+            <div class="profile">
+                <div class="profile-img-container">
+                    <img class="profile-img" src="/api/placeholder/120/120" alt="프로필 이미지">
+                </div>
+                <h2>🌿 숲지기님 🌿</h2>
+                <p>🏝️ 입도일: 2023년 10월 1일</p>
+                <button class="edit-profile-btn">프로필 꾸미기</button>
+            </div>
+
+            <!-- 최근 7일간 조회수 통계 -->
+            <div class="stats-section">
+                <h3>🔍 최근 7일간 방문객 수</h3>
+                <div class="chart-container">
+                    <canvas id="views-chart"></canvas>
+                </div>
+            </div>
+
+            <!-- 최근 7일간 글 작성수 통계 -->
+            <div class="stats-section">
+                <h3>✏️ 최근 7일간 글 작성수</h3>
+                <div class="chart-container">
+                    <canvas id="posts-chart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- 메인 콘텐츠 -->
+        <div class="main-content">
+            <!-- 데코레이션 요소 -->
+            <div class="fish-decoration fish-1"></div>
+            <div class="fish-decoration fish-2"></div>
+
+            <!-- 글 작성 목표치 진행 프로그래스바 -->
+            <div class="content-section">
+                <h3>🎯 글 작성 목표</h3>
+                <div class="progress-container">
+                    <div class="progress-info">
+                        <span>이번 달 목표: 30개</span>
+                        <span>12/30 (40%)</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 40%;"></div>
+                    </div>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-info">
+                        <span>이번 주 목표: 7개</span>
+                        <span>3/7 (43%)</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 43%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 오늘의 운세 -->
+            <div class="content-section">
+                <h3>🔮 오늘의 운세</h3>
+                <div class="fortune">
+                    <p><strong>2025년 3월 29일의 숲 운세</strong></p>
+                    <p>오늘은 행운의 별이 빛나는 날입니다! 🌟 창의적인 아이디어가 새싹처럼 솟아날 거예요. 블로그에 새로운 주제로 글을 쓰면 많은 방문객들이 찾아올 거에요. 특히 오후에는 집중력이 높아져 글쓰기에 좋은 시간이 될 거예요. 오늘의 행운 아이템은 '푸른 꽃' 입니다!</p>
+                </div>
+            </div>
+
+            <!-- 최근 활동 -->
+            <div class="content-section">
+                <h3>🏃‍♂️ 최근 활동</h3>
+                <div class="recent-activities">
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-edit"></i>
+                        </div>
+                        <div class="activity-details">
+                            <h4>새 글 작성</h4>
+                            <p>"스프링부트와 JPA 시작하기" 글을 작성했습니다.</p>
+                        </div>
+                        <span class="activity-time">1시간 전</span>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-comment"></i>
+                        </div>
+                        <div class="activity-details">
+                            <h4>댓글 작성</h4>
+                            <p>"마리아DB 설치 방법" 글에 댓글을 남겼습니다.</p>
+                        </div>
+                        <span class="activity-time">3시간 전</span>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <div class="activity-details">
+                            <h4>좋아요</h4>
+                            <p>"JPA 연관관계 매핑" 글에 좋아요를 눌렀습니다.</p>
+                        </div>
+                        <span class="activity-time">어제</span>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="activity-details">
+                            <h4>업적 달성</h4>
+                            <p>"열정적인 블로거" 배지를 획득했습니다.</p>
+                        </div>
+                        <span class="activity-time">2일 전</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+<script>
+    // 페이지가 로드되면 차트 생성
+    document.addEventListener('DOMContentLoaded', function() {
+
+        // 사용자 통계 데이터 가져오기
+        fetchUserStats();
+
+        // 프로필 수정 버튼 이벤트
+        document.querySelector('.edit-profile-btn').addEventListener('click', function() {
+            alert('🏝️ 프로필 꾸미기 메뉴가 열릴 예정입니다! 🌿');
+        });
+    });
+
+
+    function fetchUserStats() {
+
+        // 세션에서 사용자 정보 가져오기 (예: sessionStorage 사용)
+        const username = localStorage.getItem('username');
+        if (!username) {
+            window.location.href = '/login.html';
+            return;
+        }
+
+        //서버에서 통계 데이터 받아옴
+        fetch('/api/user/stats', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Username': username // 로그인된 사용자 이름을 헤더에 포함
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`통계 데이터를 가져오는데 실패했습니다. 상태 코드: ${response.status}, 응답: ${response.text}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            // 차트 업데이트
+            updateViewsChart(data.viewStats);
+            updatePostsChart(data.postStats);
+
+            // 목표 진행률 업데이트
+            updateGoalProgress(data.goalProgress);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // 오류 발생 시 기본 데이터로 차트 생성 (개발/테스트용)
+            createDefaultCharts();
+        });
+    }
+
+function updateViewsChart(viewStats) {
+    const labels = viewStats.map(item => item.date);
+    const data = viewStats.map(item => item.views);
+
+    const viewsCtx = document.getElementById('views-chart').getContext('2d');
+    const viewsChart = new Chart(viewsCtx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: '방문객 수',
+                data: data,
+                backgroundColor: [
+                    '#81c784', '#66bb6a', '#4caf50',
+                    '#43a047', '#388e3c', '#2e7d32', '#1b5e20'
+                ],
+                borderColor: '#1b5e20',
+                borderWidth: 2,
+                borderRadius: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        display: true,
+                        color: '#e8f5e9'
+                    },
+                    ticks: {
+                        font: {
+                            family: 'Gaegu',
+                            size: 14
+                        },
+                        color: '#33691e'
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        font: {
+                            family: 'Gaegu',
+                            size: 14
+                        },
+                        color: '#33691e'
+                    }
+                }
+            }
+        }
+    });
+}
+
+function updatePostsChart(postStats) {
+    const labels = postStats.map(item => item.date);
+    const data = postStats.map(item => item.posts);
+
+    const postsCtx = document.getElementById('posts-chart').getContext('2d');
+    const postsChart = new Chart(postsCtx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: '글 작성수',
+                data: data,
+                backgroundColor: [
+                    '#ffcc80', '#ffb74d', '#ffa726',
+                    '#ff9800', '#fb8c00', '#f57c00', '#ef6c00'
+                ],
+                borderColor: '#e65100',
+                borderWidth: 2,
+                borderRadius: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 5,
+                    ticks: {
+                        stepSize: 1,
+                        font: {
+                            family: 'Gaegu',
+                            size: 14
+                        },
+                        color: '#e65100'
+                    },
+                    grid: {
+                        display: true,
+                        color: '#fff3e0'
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        font: {
+                            family: 'Gaegu',
+                            size: 14
+                        },
+                        color: '#e65100'
+                    }
+                }
+            }
+        }
+    });
+}
+
+function updateGoalProgress(goalProgress) {
+    // 월간 목표 업데이트
+    const monthlyProgressElement = document.querySelector('.progress-container:nth-child(1)');
+    const monthlyInfoElement = monthlyProgressElement.querySelector('.progress-info');
+    const monthlyProgressBar = monthlyProgressElement.querySelector('.progress');
+
+    monthlyInfoElement.innerHTML =
+        `<span>이번 달 목표: ${goalProgress.monthlyGoal}개</span>
+         <span>${goalProgress.monthlyPosts}/${goalProgress.monthlyGoal} (${goalProgress.monthlyPercentage}%)</span>`;
+    monthlyProgressBar.style.width = `${goalProgress.monthlyPercentage}%`;
+
+    // 주간 목표 업데이트
+    const weeklyProgressElement = document.querySelector('.progress-container:nth-child(2)');
+    const weeklyInfoElement = weeklyProgressElement.querySelector('.progress-info');
+    const weeklyProgressBar = weeklyProgressElement.querySelector('.progress');
+
+    weeklyInfoElement.innerHTML =
+        `<span>이번 주 목표: ${goalProgress.weeklyGoal}개</span>
+         <span>${goalProgress.weeklyPosts}/${goalProgress.weeklyGoal} (${goalProgress.weeklyPercentage}%)</span>`;
+    weeklyProgressBar.style.width = `${goalProgress.weeklyPercentage}%`;
+}
+
+</script>
+</body>
+</html>
