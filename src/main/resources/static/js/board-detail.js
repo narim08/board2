@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const boardId = urlParams.get('id');
     let editingCommentId = null;
 
+
     async function fetchBoardDetails() {
         try {
             const response = await fetch(`/api/board/${boardId}`);
@@ -25,6 +26,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p>작성일: ${new Date(board.createTime).toLocaleString()}</p>
                 <p>조회수: ${board.viewCount}</p>
                 <div class="board-content">${board.content}</div>
+                <div id="like-section">
+                    <button id="like-btn">🤍 좋아요</button>
+                    <span id="like-count">0</span>
+                </div>
                 <div id="comments-section">
                     <h3>댓글</h3>
                     <div id="comments-list"></div>
@@ -34,6 +39,30 @@ document.addEventListener('DOMContentLoaded', () => {
                     </form>
                 </div>
             `;
+
+            //게시글이 생성된 후, 좋아요 기능 추가됨
+            const likeButton = document.getElementById('like-btn');
+            const likeCountSpan = document.getElementById('like-count');
+
+            async function updateLikeCount() {
+                    const response = await fetch(`/api/board/${boardId}/like/count`);
+                    const count = await response.json();
+                    likeCountSpan.textContent = count;
+                }
+
+            async function toggleLike() {
+                const response = await fetch(`/api/board/${boardId}/like`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Username': username }
+                });
+                const result = await response.json();
+                likeButton.textContent = result.liked ? "❤️ 좋아요 취소" : "🤍 좋아요";
+                likeCountSpan.textContent = result.likeCount;
+            }
+
+            likeButton.addEventListener('click', toggleLike);
+            await updateLikeCount();
+
 
             //자기 글이 아니면 수정, 삭제 버튼 안 보임
             if (board.userName === username) {
@@ -50,6 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('게시글 상세 정보를 불러오는 중 오류가 발생했습니다.');
         }
     }
+
 
     async function fetchComments() {
         const commentsList = document.getElementById('comments-list');
